@@ -1,4 +1,6 @@
-<?php include 'header.php'; 
+<?php 
+error_reporting(0); // hata gösterimini kapatmak icin kullanılır
+include 'header.php'; 
 ?>
         <!-- page content -->
         <div class="right_col" role="main">
@@ -9,7 +11,30 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">
-                    <h2>Genel Ayarlar <small>İşlem Durumu</small></h2>
+                    <h2>Genel Ayarlar <small>
+                      
+                      <?php 
+
+                      if($_GET['durum']=="ok")
+                      {?>
+
+                        <b style="color:green; font-size:15px;">İşlem Başarılı...</b>
+
+                      <?php }
+
+                      else if($_GET['durum']=="no")
+                      {?>
+
+                        <b style="color:red; font-size:15px;">İşlem Başarısız...</b>
+
+                      <?php }
+
+                      ?>
+                      
+
+                      
+
+                    </small></h2>
                     <ul class="nav navbar-right panel_toolbox">
                       <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                       </li>
@@ -66,7 +91,7 @@
                                    
                       <div class="form-group">
                         <div align="right" class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                          <button type="submit" class="btn btn-success">Güncelle</button>
+                          <button type="submit" class="btn btn-success" name="genelayarkaydet">Güncelle</button>
                         </div>
                       </div>
                     </form>
