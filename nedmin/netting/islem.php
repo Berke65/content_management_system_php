@@ -68,4 +68,90 @@ if (isset($_POST['genelayarkaydet']))
 	}
 // İLETİSİM AYAR GÜNCELLEME İSLEMİ BİTİS
 
+
+// API AYAR GÜNCELLEME İSLEMİ BASLANGIC
+	if(isset($_POST['apiayarkaydet']))
+	{
+		$ayarkaydet=$db->prepare("UPDATE ayar SET
+			ayar_maps=:ayar_maps,
+			ayar_analystic=:ayar_analystic,
+			ayar_zopim=:ayar_zopim
+			WHERE ayar_id=0
+			");
+
+		$update=$ayarkaydet->execute([
+			'ayar_maps' => $_POST['ayar_maps'],
+			'ayar_analystic' => $_POST['ayar_analystic'],
+			'ayar_zopim' => $_POST['ayar_zopim']
+		]);		
+
+		if($update)
+		{
+			header("Location: ../production/api-ayar.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/api-ayar.php?durum=no");
+		}
+	}
+// API AYAR GÜNCELLEME İSLEMİ BİTİS
+
+// SOSYAL AYAR GÜNCELLEME BASLANGIC
+	if(isset($_POST['sosyalayarkaydet']))
+	{
+		$ayarkaydet=$db->prepare("UPDATE ayar SET
+			ayar_facebook=:ayar_facebook,
+			ayar_twitter=:ayar_twitter,
+			ayar_google=:ayar_google,
+			ayar_youtube=:ayar_youtube
+			WHERE ayar_id=0
+			");
+
+		$update=$ayarkaydet->execute([
+			'ayar_facebook' => $_POST['ayar_facebook'],
+			'ayar_twitter' => $_POST['ayar_twitter'],
+			'ayar_google' => $_POST['ayar_google'],
+			'ayar_youtube' => $_POST['ayar_youtube']
+		]);
+
+		if($update)
+		{
+			header("Location: ../production/sosyal-ayar.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/sosyal-ayar.php?durum=no");
+		}
+	}
+// SOSYAL AYAR GÜNCELLEME BİTİS
+
+
+// MAIL AYAR GÜNCELLEME BASLANGIC
+	if(isset($_POST['smtpayarkaydet']))
+	{
+		$ayarkaydet=$db->prepare("UPDATE ayar SET
+			ayar_smtphost=:ayar_smtphost,
+			ayar_smtpuser=:ayar_smtpuser,
+			ayar_smtppassword=:ayar_smtppassword,
+			ayar_smtpport=:ayar_smtpport
+			WHERE ayar_id=0
+			");
+
+		$update=$ayarkaydet->execute([
+			'ayar_smtphost' => $_POST['ayar_smtphost'],
+			'ayar_smtpuser' => $_POST['ayar_smtpuser'],
+			'ayar_smtppassword' => $_POST['ayar_smtppassword'],
+			'ayar_smtpport' => $_POST['ayar_smtpport']
+		]);
+
+		if($update)
+		{
+			header("Location: ../production/mail-ayar.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/mail-ayar.php?durum=no");
+		}
+	}
+// MAIL AYAR GÜNCELLEME BASLANGIC
  ?>

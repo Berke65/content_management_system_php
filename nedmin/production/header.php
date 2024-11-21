@@ -75,6 +75,9 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
                     <ul class="nav child_menu">
                       <li><a href="genel-ayar.php">Genel Ayarlar</a></li>
                       <li><a href="iletisim-ayar.php">İletişim Ayarları</a></li>
+                      <li><a href="api-ayar.php">Api Ayarları</a></li>
+                      <li><a href="sosyal-ayar.php">Sosyal Ayarlar</a></li>
+                      <li><a href="mail-ayar.php">Mail Ayarları</a></li>
                     </ul>
                   </li>
                 </ul>
