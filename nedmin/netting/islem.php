@@ -1,5 +1,43 @@
-<?php 
+<?php
+
+ob_start();
+session_start();
+
 include 'baglan.php';
+
+
+// ADMIN GİRİS İSLEMİ BASLANGIC
+if(isset($_POST['admingiris']))
+{
+	$kullanici_mail = $_POST['kullanici_mail'];
+	$kullanici_password = md5($_POST['kullanici_password']);// md5 şifreleme
+
+	$kullanicisor=$db->prepare("SELECT * FROM kullanici where kullanici_mail=:kullanici_mail AND kullanici_password=:kullanici_password AND kullanici_yetki=:kullanici_yetki");
+	$kullanicisor->execute([
+		'kullanici_mail' => $kullanici_mail,
+		'kullanici_password' => $kullanici_password,
+		'kullanici_yetki' => 5
+	]);
+
+	echo $say=$kullanicisor->rowCount();
+
+	if($say==1)
+	{
+		$_SESSION['kullanici_mail']=$kullanici_mail;
+		header("Location: ../production/index.php");
+
+		//session -> kullanici tarayıcıyı kapatana ya da cıkıs yapana kadar kullanici orada mı degil mi bilgilerini tutar! bunun icin de obstart ve session start komutlarının yazılmıs olması gerekir!
+
+	}
+	else
+	{
+		header("Location: ../production/login.php?durum=no");
+		exit;
+	}
+
+}
+// ADMIN GİRİS İSLEMİ BITIS
+
 
 // GENEL AYAR GÜNCELLEME İSLEMİ BASLANGIC
 if (isset($_POST['genelayarkaydet']))
@@ -96,6 +134,7 @@ if (isset($_POST['genelayarkaydet']))
 	}
 // API AYAR GÜNCELLEME İSLEMİ BİTİS
 
+
 // SOSYAL AYAR GÜNCELLEME BASLANGIC
 	if(isset($_POST['sosyalayarkaydet']))
 	{
@@ -186,4 +225,35 @@ if (isset($_POST['genelayarkaydet']))
 		}
 	}
 // HAKKIMIZDA AYAR GÜNCELLEME BİTİS
+
+
+	if(isset($_POST['kullanici_duzenle']))
+	{
+		$kullanici_id = $_POST['kullanici_id'];
+
+		$kullaniciduzenle=$db->prepare("UPDATE kullanici SET
+			kullanici_adsoyad=:kullanici_adsoyad,
+			kullanici_tc=:kullanici_tc, 
+			kullanici_gsm=:kullanici_gsm,
+			kullanici_durum=:kullanici_durum
+			WHERE kullanici_id={$_POST['kullanici_id']}
+			"); // where satırında degisken kullanılacağı icin süslü parantez icine yazdı
+		// AYRICA SÜTUNLARI BİRBİRİNE ESİTLERKEN DEMEK İSTEDİGİMİ ANLADIN ARALARA ASLA BOSLUK BIRAKMA
+
+		$update=$kullaniciduzenle->execute([
+			'kullanici_adsoyad' => $_POST['kullanici_adsoyad'],
+			'kullanici_tc' => $_POST['kullanici_tc'],
+			'kullanici_gsm' => $_POST['kullanici_gsm'],
+			'kullanici_durum' => $_POST['kullanici_durum']
+		]);
+
+		if($update)
+		{
+			header("Location: ../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=no");
+		}
+	}
  ?>

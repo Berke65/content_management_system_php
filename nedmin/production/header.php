@@ -1,4 +1,7 @@
 <?php 
+ob_start();
+session_start();
+
       include '../netting/baglan.php';
 
 $ayarsor=$db->prepare("SELECT * FROM ayar WHERE ayar_id=:id");
@@ -6,6 +9,19 @@ $ayarsor->execute([
   'id' => 0
 ]);
 $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
+
+$kullanicisor=$db->prepare("SELECT * FROM kullanici WHERE kullanici_mail=:kullanici_mail");
+$kullanicisor->execute([
+  'kullanici_mail' => $_SESSION['kullanici_mail']
+]);
+$say=$kullanicisor->rowCount();
+$kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
+
+  if($say==0)
+  {
+    header("Location: login.php?durum=izinsiz"); //izinsiz kullanıcılar icin engelleme
+    exit;
+  }
 
  ?>
 
@@ -60,8 +76,8 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
                 <img src="images/img.jpg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
-                <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <span>Hoşgeldiniz,</span>
+                <h2><?php echo $kullanicicek['kullanici_adsoyad']; ?></h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -77,6 +93,9 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
                   <li><a href="index.php"><i class="fa fa-home"></i> Ana Sayfa </a></li>
 
                   <li><a href="hakkimizda.php"><i class="fa fa-info"></i> Hakkımızda </a></li>
+
+                  <li><a href="kullanici.php"><i class="fa fa-user"></i> Kullanıcı İşlemleri </a></li>
+
                   
                   <li><a><i class="fa fa-cogs"></i>Site Ayarları<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
@@ -122,19 +141,13 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                    <img src="images/img.jpg" alt="">John Doe
+                    <img src="images/img.jpg" alt=""><?php echo $kullanicicek['kullanici_adsoyad']; ?>
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
                     <li><a href="javascript:;"> Profile</a></li>
-                    <li>
-                      <a href="javascript:;">
-                        <span class="badge bg-red pull-right">50%</span>
-                        <span>Settings</span>
-                      </a>
-                    </li>
-                    <li><a href="javascript:;">Help</a></li>
-                    <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
+                   
+                    <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Güvenli Çıkış</a></li>
                   </ul>
                 </li>
 
