@@ -154,4 +154,36 @@ if (isset($_POST['genelayarkaydet']))
 		}
 	}
 // MAIL AYAR GÜNCELLEME BASLANGIC
+
+
+// HAKKIMIZDA AYAR GÜNCELLEME BASLANGIC
+	if(isset($_POST['hakkimizdakaydet']))
+	{
+		$hakkimizdakaydet=$db->prepare("UPDATE hakkimizda SET
+			hakkimizda_baslik=:hakkimizda_baslik,
+			hakkimizda_icerik=:hakkimizda_icerik,
+			hakkimizda_video=:hakkimizda_video,
+			hakkimizda_vizyon=:hakkimizda_vizyon,
+			hakkimizda_misyon=:hakkimizda_misyon
+			WHERE hakkimizda_id=0
+		");
+
+		$update=$hakkimizdakaydet->execute([
+			'hakkimizda_baslik' => $_POST['hakkimizda_baslik'],
+			'hakkimizda_icerik' => $_POST['hakkimizda_icerik'],
+			'hakkimizda_video'  => $_POST['hakkimizda_video'],
+			'hakkimizda_vizyon' => $_POST['hakkimizda_vizyon'],
+			'hakkimizda_misyon' => $_POST['hakkimizda_misyon']
+		]);
+
+		if($update)
+		{
+			header("Location: ../production/hakkimizda.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/hakkimizda.php?durum=no");
+		}
+	}
+// HAKKIMIZDA AYAR GÜNCELLEME BİTİS
  ?>
