@@ -336,5 +336,41 @@ if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 		}
 	}
 // MENU SİLME İSLEMİ BİTİS
+
+
+// MENU EKLEME İSLEMİ BASLANGIC
+	if(isset($_POST['menukaydet']))
+	{
+		$menu_seourl = seo($_POST['menu_ad']);
+
+		$menuekle=$db->prepare("INSERT INTO menu SET
+			menu_ad=:menu_ad,
+			menu_detay=:menu_detay,
+			menu_url=:menu_url,
+			menu_sira=:menu_sira,
+			menu_seourl=:menu_seourl,
+			menu_durum=:menu_durum
+		");
+
+		$kaydet=$menuekle->execute([
+			'menu_ad' => $_POST['menu_ad'],
+			'menu_detay' => $_POST['menu_detay'],
+			'menu_url' => $_POST['menu_url'],
+			'menu_sira' => $_POST['menu_sira'],
+			'menu_seourl' => $menu_seourl,
+			'menu_durum' => $_POST['menu_durum']
+		]);
+
+		if($kaydet)
+		{
+			header("Location: ../production/menu.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/menu.php?durum=no");
+		}
+	}
+// MENU EKLEME İSLEMİ BITIS
+
  ?>
 
