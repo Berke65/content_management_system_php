@@ -4,6 +4,7 @@ ob_start();
 session_start();
 
 include 'baglan.php';
+include '../production/fonksiyon.php';
 
 
 // ADMIN GİRİS İSLEMİ BASLANGIC
@@ -227,6 +228,7 @@ if (isset($_POST['genelayarkaydet']))
 // HAKKIMIZDA AYAR GÜNCELLEME BİTİS
 
 
+// KULLANICI DÜZENLEME İSLEMLERİ BASLANGIC
 	if(isset($_POST['kullanici_duzenle']))
 	{
 		$kullanici_id = $_POST['kullanici_id'];
@@ -256,4 +258,83 @@ if (isset($_POST['genelayarkaydet']))
 			header("Location: ../production/kullanici-duzenle.php?kullanici_id=$kullanici_id&durum=no");
 		}
 	}
+// KULLANICI DÜZENLEME İSLEMLERİ BASLANGIC
+
+
+// KULLANICI SİLME İSLEMLERİ BASLANGIC
+if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
+{
+	$kullanicisil=$db->prepare("DELETE FROM kullanici WHERE kullanici_id=:kullanici_id");
+	$kontrol=$kullanicisil->execute([
+		'kullanici_id' => $_GET['kullanici_id']
+	]); 
+
+	if($kontrol)
+	{
+		header("Location: ../production/kullanici.php?sil=ok");
+	}
+	else
+	{
+		header("Location: ../production/kullanici.php?sil=no");
+	}
+}
+// KULLANICI SİLME İSLEMLERİ BİTİS
+
+
+// MENU GUNCELLEME İSLEMİ BASLANGIC
+	if(isset($_POST['menu_duzenle']))
+	{
+		$menu_id = $_POST['menu_id'];
+		$menu_seourl = seo($_POST['menu_ad']);
+
+		$menuguncelle=$db->prepare("UPDATE menu SET
+			menu_ad=:menu_ad,
+			menu_detay=:menu_detay,
+			menu_url=:menu_url,
+			menu_sira=:menu_sira,
+			menu_seourl=:menu_seourl,
+			menu_durum=:menu_durum
+			WHERE menu_id = {$_POST['menu_id']}
+		");
+
+		$update=$menuguncelle->execute([
+			'menu_ad' => $_POST['menu_ad'],
+			'menu_detay' => $_POST['menu_detay'],
+			'menu_url' => $_POST['menu_url'],
+			'menu_sira' => $_POST['menu_sira'],
+			'menu_seourl' => $menu_seourl,
+			'menu_durum' => $_POST['menu_durum']
+		]);
+
+		if($update)
+		{
+			header("Location: ../production/menu-duzenle.php?menu_id=$menu_id&durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/menu-duzenle.php?menu_id=$menu_id&durum=no");
+		}
+	}
+// MENU GUNCELLEME İSLEMİ BİTİS
+
+
+// MENU SİLME İSLEMİ BASLANGIC
+	if($_GET['menusil'] == "ok")
+	{
+		$menusil=$db->prepare("DELETE FROM menu WHERE menu_id=:menu_id");
+		$kontrol=$menusil->execute([
+			'menu_id' => $_GET['menu_id']
+		]);
+
+		if($kontrol)
+		{
+			header("Location: ../production/menu.php?sil=ok");
+		}
+		else
+		{
+			header("Location: ../production/menu.php?sil=no");
+		}
+	}
+// MENU SİLME İSLEMİ BİTİS
  ?>
+
