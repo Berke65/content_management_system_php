@@ -57,3 +57,8 @@ The system is designed to meet all the essential requirements of an e-commerce p
 - **GitHub**: Project hosting and collaboration.
 
 ---
+
+## 🚧 Status
+- **Development in Progress**: This project is currently under development. New features and improvements are being added regularly.
+
+---
