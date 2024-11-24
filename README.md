@@ -34,7 +34,6 @@ The system is designed to meet all the essential requirements of an e-commerce p
 - User login/logout system (PHP-based session management).
 - Data validation and protection against SQL injection.
 
----
 
 ## 💻 Technologies Used
 
@@ -56,7 +55,6 @@ The system is designed to meet all the essential requirements of an e-commerce p
 - **Git**: Version control system.
 - **GitHub**: Project hosting and collaboration.
 
----
 
 ## 🚧 Status
 - **Development in Progress**: This project is currently under development. New features and improvements are being added regularly.
