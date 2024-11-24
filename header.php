@@ -1,5 +1,6 @@
 <?php 
       include 'nedmin/netting/baglan.php';
+      include 'nedmin/production/fonksiyon.php';
 
 $ayarsor=$db->prepare("SELECT * FROM ayar WHERE ayar_id=:id");
 $ayarsor->execute([
@@ -48,7 +49,7 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-6 col-md-4 main-logo">
-					<a href="index.php"><img src="images\logo.png" alt="logo" class="logo img-responsive"></a>
+					<a href="index.php"><img src="<?php echo $ayarcek['ayar_logo']; ?>" alt="Site Logosu" width="50%" class="logo img-responsive"></a>
 				</div>
 				<div class="col-md-8">
 					<div class="pushright">
@@ -125,11 +126,27 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 
 								<?php 
 
-									$menusor=$db->prepare("SELECT * FROM menu ORDER BY menu_sira ASC LIMIT 5");
-									$menusor->execute();
+									$menusor=$db->prepare("SELECT * FROM menu WHERE menu_durum=:menu_durum ORDER BY menu_sira ASC LIMIT 5");
+									$menusor->execute([
+											'menu_durum' => 1
+									]);
 									while($menucek=$menusor->fetch(PDO::FETCH_ASSOC)) {
 								 	?>
-									<li><a href="<?php echo $menucek['menu_url'] ?>"><?php echo $menucek['menu_ad']; ?></a></li>
+									<li><a href="
+										<?php 
+											if(!empty($menucek['menu_url']))
+											{
+												echo $menucek['menu_url'];
+											}
+											else
+											{
+												echo "sayfa-".seo($menucek['menu_ad']);
+											}
+										 ?>
+									"><?php echo $menucek['menu_ad']; ?></a></li>
+
+									<!-- dipnot: sıralama yapacağımız veritabanındaki tablo sütunlarında o sütunu varchar yerine int yap  -->
+
 									<?php  } ?>
 
 							</ul>

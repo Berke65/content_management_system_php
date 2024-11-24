@@ -68,7 +68,13 @@ $menucek=$menusor->fetch(PDO::FETCH_ASSOC);
                     <form method="POST" action="../netting/islem.php" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 
                      
-
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Sayfa Linki <span class="required">*</span>
+                      </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <input type="" id="first-name" name="kullanici_tc" disabled="" value="<?php echo $ayarcek['ayar_url'] ?>/sayfa-<?php echo seo($menucek['menu_ad']) ?>" required="required" class="form-control col-md-7 col-xs-12">
+                        </div>
+                      </div>
 
                         <!-- id alma islemi -->  <input type="hidden" id="first-name" required="required" name="menu_id" value="<?php echo $menucek['menu_id']; ?>">
 
@@ -108,7 +114,7 @@ $menucek=$menusor->fetch(PDO::FETCH_ASSOC);
                         <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Menü Url <span class="required">*</span>
                         </label>
                         <div class="col-md-6 col-sm-6 col-xs-12">
-                          <input type="text" id="first-name" required="required" name="menu_url" value="<?php echo $menucek['menu_url']; ?>" class="form-control col-md-7 col-xs-12">
+                          <input type="text" id="first-name" name="menu_url" value="<?php echo $menucek['menu_url']; ?>" class="form-control col-md-7 col-xs-12">
                         </div>
                       </div>
 

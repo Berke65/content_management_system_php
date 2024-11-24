@@ -372,5 +372,40 @@ if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 	}
 // MENU EKLEME İSLEMİ BITIS
 
+
+// LOGO KAYDETME İSLEMİ BASLANGIC
+	if(isset($_POST['logoduzenle']))
+	{
+		$uploads_dir = '../../dimg';
+
+		$tmp_name = $_FILES['ayar_logo']["tmp_name"];
+		$name = $_FILES['ayar_logo']["name"];
+
+		$benzersizsayi4=rand(20000,32000);
+		$refimgyol=substr($uploads_dir, 6) ."/". $benzersizsayi4.$name;
+
+		move_uploaded_file($tmp_name, "$uploads_dir/$benzersizsayi4$name");
+
+		$logokaydet=$db->prepare("UPDATE ayar SET
+			ayar_logo=:ayar_logo
+			WHERE ayar_id=0");
+
+		$update=$logokaydet->execute([
+			'ayar_logo' => $refimgyol
+		]);
+
+		if($update)
+		{
+			$resimsilunlink= $_POST['eski_yol']; //unlink eski resimi silmek icin kullanılır
+			unlink("../../$resimsilunlink");
+
+			header("Location: ../production/genel-ayar.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/genel-ayar.php?durum=no");
+		}
+	}
+// LOGO KAYDETME İSLEMİ BITIS
  ?>
 

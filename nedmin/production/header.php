@@ -2,7 +2,10 @@
 ob_start();
 session_start();
 
+error_reporting(0);
+
       include '../netting/baglan.php';
+      include 'fonksiyon.php';
 
 $ayarsor=$db->prepare("SELECT * FROM ayar WHERE ayar_id=:id");
 $ayarsor->execute([
@@ -65,7 +68,7 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="index.php" class="site_title"><i class="fa fa-clipboard"></i> <span>Badi Etkinlik</span></a>
             </div>
 
             <div class="clearfix"></div>
@@ -92,14 +95,6 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
 
                   <li><a href="index.php"><i class="fa fa-home"></i> Ana Sayfa </a></li>
 
-                  <li><a href="hakkimizda.php"><i class="fa fa-info"></i> Hakkımızda İşlemleri</a></li>
-
-                  <li><a href="kullanici.php"><i class="fa fa-user"></i> Kullanıcı İşlemleri </a></li>
-
-                  <li><a href="menu.php"><i class="fa fa-list"></i> Menü İşlemleri </a></li>
-
-
-                  
                   <li><a><i class="fa fa-cogs"></i>Site Ayarları<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="genel-ayar.php">Genel Ayarlar</a></li>
@@ -109,6 +104,16 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
                       <li><a href="mail-ayar.php">Mail Ayarları</a></li>
                     </ul>
                   </li>
+
+                  <li><a href="hakkimizda.php"><i class="fa fa-info"></i> Hakkımızda İşlemleri</a></li>
+
+                  <li><a href="kullanici.php"><i class="fa fa-user"></i> Kullanıcı İşlemleri </a></li>
+
+                  <li><a href="menu.php"><i class="fa fa-list"></i> Menü İşlemleri </a></li>
+
+
+                  
+                  
                 </ul>
               </div>
             </div>

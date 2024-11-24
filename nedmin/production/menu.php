@@ -46,6 +46,7 @@ $menusor->execute();
           </div>
           <div class="x_content">
 
+            <strong><p style="font-size:15px;">Geliştirme Aşamasındayken Lütfen Menü İsimlerinde Türkçe Karakter Kullanmayınız!</p></strong>
 
             <!-- Div İçerik Başlangıç -->
 
