@@ -30,8 +30,7 @@ include 'header.php';
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
-                    <br />
-
+                    <strong><p style="font-size:15px;">Geliştirme Aşamasındayken Lütfen Menü İsimlerinde Türkçe Karakter Kullanmayınız!</p></strong>
                     <!-- / => en kök dizine çık -->
                     <form method="POST" action="../netting/islem.php" id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
 

@@ -261,7 +261,7 @@ if (isset($_POST['genelayarkaydet']))
 // KULLANICI DÜZENLEME İSLEMLERİ BASLANGIC
 
 
-// KULLANICI SİLME İSLEMLERİ BASLANGIC
+// KULLANICI "SİL"ME İSLEMLERİ BASLANGIC
 if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 {
 	$kullanicisil=$db->prepare("DELETE FROM kullanici WHERE kullanici_id=:kullanici_id");
@@ -407,5 +407,222 @@ if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 		}
 	}
 // LOGO KAYDETME İSLEMİ BITIS
+
+
+// SLIDER KAYDETME İSLEMİ BASLANGIC
+	if(isset($_POST['sliderkaydet']))
+	{
+		$uploads_dir = '../../dimg/slider';
+
+		$tmp_name = $_FILES['slider_resimyol']["tmp_name"];
+		$name = $_FILES['slider_resimyol']["name"];
+
+		$benzersizsayi1=rand(20000,32000);
+		$benzersizsayi2=rand(20000,32000);
+		$benzersizsayi3=rand(20000,32000);
+		$benzersizsayi4=rand(20000,32000);
+
+		$benzersizad=$benzersizsayi1.$benzersizsayi2.$benzersizsayi3.$benzersizsayi4;
+		$refimgyol=substr($uploads_dir, 6)."/".$benzersizad.$name;
+
+		move_uploaded_file($tmp_name, "$uploads_dir/$benzersizad$name");
+
+
+		$sliderkaydet=$db->prepare("INSERT INTO slider SET
+			slider_ad=:slider_ad,
+			slider_sira=:slider_sira,
+			slider_link=:slider_link,
+			slider_resimyol=:slider_resimyol,
+			slider_durum=:slider_durum
+		");
+
+		$update=$sliderkaydet->execute([
+			'slider_ad' => $_POST['slider_ad'],
+			'slider_sira' => $_POST['slider_sira'],
+			'slider_link' => $_POST['slider_link'],
+			'slider_resimyol' => $refimgyol,
+			'slider_durum' => $_POST['slider_durum']
+		]);
+
+		if($update)
+		{
+			header("Location: ../production/slider.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/slider.php?durum=no");
+		}
+	}
+// SLIDER KAYDETME İSLEMİ BITIS
+
+
+// SLIDER RESIM DUZENLEME İSLEMİ BASLANGIC
+	if(isset($_POST['slider_resim_duzenle']))
+	{
+		$slider_id = $_POST['slider_id'];
+
+		$uploads_dir = '../../dimg/slider';
+
+		$tmp_name = $_FILES['slider_resimyol']["tmp_name"];
+		$name = $_FILES['slider_resimyol']["name"];
+
+		$benzersizsayi1=rand(20000, 32000);
+		$benzersizsayi2=rand(20000, 32000);
+		$benzersizsayi3=rand(20000, 32000);
+		$benzersizsayi4=rand(20000, 32000);
+
+		$benzersizad = $benzersizsayi1.$benzersizsayi2.$benzersizsayi3.$benzersizsayi4;
+		$refimgyol = substr($uploads_dir, 6)."/".$benzersizad.$name;
+
+		move_uploaded_file($tmp_name, "$uploads_dir/$benzersizad$name");
+
+		$sliderresim = $db->prepare("UPDATE slider SET
+			slider_resimyol=:slider_resimyol
+			WHERE slider_id={$_POST['slider_id']} 
+		");
+
+		$update=$sliderresim->execute([
+			'slider_resimyol' => $refimgyol
+		]);	
+
+		if($update)
+		{
+			$sliderresimsilunlink= $_POST['slidereskiresim_yol']; 
+			unlink("../../$sliderresimsilunlink");
+
+			header("Location: ../production/slider-duzenle.php?slider_id=$slider_id&durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/slider-duzenle.php?slider_id=$slider_id&durum=no");
+		}
+	}	
+// SLIDER RESİM DUZENLEME İSLEMİ BİTİS
+
+
+// SLIDER DUZENLEME İSLEMİ BASLANGIC
+	if(isset($_POST['slider_duzenle']))
+	{
+		$slider_id = $_POST['slider_id'];
+
+		$sliderduzenle=$db->prepare("UPDATE slider SET
+			slider_ad=:slider_ad,
+			slider_sira=:slider_sira,
+			slider_link=:slider_link,
+			slider_durum=:slider_durum
+			WHERE slider_id={$_POST['slider_id']}
+		");
+
+		$update=$sliderduzenle->execute([
+			'slider_ad' => $_POST['slider_ad'],
+			'slider_sira' => $_POST['slider_sira'],
+			'slider_link' => $_POST['slider_link'],
+			'slider_durum' => $_POST['slider_durum']
+		]);
+
+		if($update)
+		{
+			header("Location: ../production/slider-duzenle.php?slider_id=$slider_id&durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/slider-duzenle.php?slider_id=$slider_id&durum=no");
+		}
+	}
+// SLIDER DUZENLEME İSLEMİ BITIS
+
+
+// SLIDER SİLME İSLEMİ BASLANGIC
+	if($_GET['slidersil']=="ok")
+	{
+		$slidersil=$db->prepare("DELETE FROM slider WHERE slider_id=:slider_id");
+		$delete=$slidersil->execute([
+			'slider_id' => $_GET['slider_id']
+		]);
+
+		if($delete)
+		{
+			header("Location: ../production/slider.php?durum=ok");
+		}
+		else
+		{
+			header("Location: ../production/slider.php?durum=no");
+		}
+	}
+// SLIDER SİLME İSLEMİ BASLANGIC
+
+
+	if(isset($_POST['kullanicikaydet']))
+	{
+		// htmlspecialchars fonksiyonu postlardan gelen zararlı kodları temizliyor
+		$kullanici_adsoyad = htmlspecialchars($_POST['kullanici_adsoyad']); 
+		$kullanici_mail = htmlspecialchars($_POST['kullanici_mail']);
+
+		$kullanici_passwordone = htmlspecialchars($_POST['kullanici_passwordone']);
+		$kullanici_passwordtwo = htmlspecialchars($_POST['kullanici_passwordtwo']);
+
+		if($kullanici_passwordone==$kullanici_passwordtwo)
+		{
+			if($kullanici_passwordone>=6)
+			{
+				$kullanicikontrol=$db->prepare("SELECT * FROM kullanici WHERE kullanici_mail=:kullanici_mail");
+				$kullanicikontrol->execute([
+					'kullanici_mail'  => $kullanici_mail
+				]);
+
+				$say=$kullanicikontrol->rowCount();				
+
+				if($say==0)
+				{
+					// artık tüm kontrollerden gectiği icin kullanıcı kayıt zamanı geldi
+
+					$password=md5($kullanici_passwordone);
+					$kullanici_yetki=1;
+
+					//md5 fonksiyonu şifreyi md5 sifreli hale getirir
+
+					$kullanicikaydet=$db->prepare("INSERT INTO kullanici SET
+						kullanici_adsoyad=:kullanici_adsoyad,
+						kullanici_mail=:kullanici_mail,
+						kullanici_password=:kullanici_password,
+						kullanici_yetki=:kullanici_yetki
+					");
+
+					$kaydet=$kullanicikaydet->execute([
+						'kullanici_adsoyad' => $kullanici_adsoyad,
+						'kullanici_mail' => $kullanici_mail,
+						'kullanici_password' => $password,
+						'kullanici_yetki' => $kullanici_yetki
+					]);
+
+					if($kaydet)
+					{
+						echo "kayıt basarili";
+						header("Location: ../../index.php?durum=loginbasarili");
+					}
+					else
+					{
+						header("Location: ../../index.php?durum=basarisiz");
+					}
+				}
+				else
+				{
+					header("Location: ../../register.php?durum=kullanicivar");
+				}
+			}
+			else
+			{
+				header("Location: ../../register.php?durum=karakterhatasi");
+				exit;
+			}
+		}
+		else
+		{
+			header("Location: ../../register.php?durum=farklisifre");
+			exit;
+		}
+	}	
  ?>
+
+
 

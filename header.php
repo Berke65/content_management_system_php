@@ -51,36 +51,40 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 				<div class="col-xs-6 col-md-4 main-logo">
 					<a href="index.php"><img src="<?php echo $ayarcek['ayar_logo']; ?>" alt="Site Logosu" width="50%" class="logo img-responsive"></a>
 				</div>
+
+				
+
+
 				<div class="col-md-8">
 					<div class="pushright">
 						<div class="top">
-							<a href="#" id="reg" class="btn btn-default btn-dark">Login<span>-- Or --</span>Register</a>
+							<a href="#" id="reg" class="btn btn-default btn-dark">Giriş Yap<span> / </span>Kayıt Ol</a>
 							<div class="regwrap">
 								<div class="row">
 									<div class="col-md-6 regform">
 										<div class="title-widget-bg">
-											<div class="title-widget">Login</div>
+											<div class="title-widget">Kullanıcı Girişi</div>
 										</div>
 										<form role="form">
 											<div class="form-group">
-												<input type="text" class="form-control" id="username" placeholder="Username">
+												<input type="text" class="form-control" id="username" placeholder="Kullanıcı Adı">
 											</div>
 											<div class="form-group">
-												<input type="password" class="form-control" id="password" placeholder="password">
+												<input type="password" class="form-control" id="password" placeholder="Şifre">
 											</div>
 											<div class="form-group">
-												<button class="btn btn-default btn-red btn-sm">Sign In</button>
+												<button class="btn btn-default btn-red btn-sm">Giriş Yap</button>
 											</div>
 										</form>
 									</div>
 									<div class="col-md-6">
 										<div class="title-widget-bg">
-											<div class="title-widget">Register</div>
+											<div class="title-widget">Kayıt Ol</div>
 										</div>
 										<p>
-											New User? By creating an account you be able to shop faster, be up to date on an order's status...
+											Yeni bir kullanıcı mısın? Hemen kayıt olup alışveriş yapabilirsin!!
 										</p>
-										<button class="btn btn-default btn-yellow">Register Now</button>
+										<a href="register.php"><button class="btn btn-default btn-yellow">Şimdi Kayıt Ol</button></a>
 									</div>
 								</div>
 							</div>
@@ -201,6 +205,11 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 							<div class="clearfix"></div>
 						</div>
 					</div>
+				<!--	<ul class="small-menu">
+			<li><a href="" class="myacc">My Account</a></li>
+			<li><a href="" class="myshop">Shopping Chart</a></li>
+			<li><a href="" class="mycheck">Checkout</a></li>
+		</ul> -->
 				</div>
 			</div>
 		</div>

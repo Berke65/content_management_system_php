@@ -111,6 +111,7 @@ $kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
 
                   <li><a href="menu.php"><i class="fa fa-list"></i> Menü İşlemleri </a></li>
 
+                  <li><a href="slider.php"><i class="fa fa-image"></i> Slider İşlemleri </a></li>
 
                   
                   
