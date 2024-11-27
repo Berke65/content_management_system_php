@@ -1,6 +1,10 @@
 <?php 
       include 'nedmin/netting/baglan.php';
       include 'nedmin/production/fonksiyon.php';
+      error_reporting(0);
+
+session_start();
+ob_start();
 
 $ayarsor=$db->prepare("SELECT * FROM ayar WHERE ayar_id=:id");
 $ayarsor->execute([
@@ -8,6 +12,11 @@ $ayarsor->execute([
 ]);
 $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 
+$kullanicisor=$db->prepare("SELECT * FROM kullanici WHERE kullanici_mail=:kullanici_mail");
+$kullanicisor->execute([
+  'kullanici_mail' => $_SESSION['userkullanici_mail']
+]);
+$kullanicicek=$kullanicisor->fetch(PDO::FETCH_ASSOC);
  ?>
 
 <!DOCTYPE html>
@@ -58,24 +67,41 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 				<div class="col-md-8">
 					<div class="pushright">
 						<div class="top">
-							<a href="#" id="reg" class="btn btn-default btn-dark">Giriş Yap<span> / </span>Kayıt Ol</a>
+							<?php 
+
+							if(isset($_SESSION['userkullanici_mail'])) // buradaki isset kullanımına dikkat!!
+							{ ?>
+
+								<a href="#" class="btn btn-default btn-dark">Hoşgeldin<span>/</span><?php echo $kullanicicek['kullanici_adsoyad'] ?></a>
+
+
+				<?php } else {?>
+
+								<a href="#" id="reg" class="btn btn-default btn-dark">Giriş Yap<span> / </span>Kayıt Ol</a>
+
+				<?php  } ?>
+
 							<div class="regwrap">
 								<div class="row">
 									<div class="col-md-6 regform">
 										<div class="title-widget-bg">
 											<div class="title-widget">Kullanıcı Girişi</div>
 										</div>
-										<form role="form">
+
+										<!-- kullanıcı giriş formu -->
+										<form role="form" action="nedmin/netting/islem.php" method="POST">
 											<div class="form-group">
-												<input type="text" class="form-control" id="username" placeholder="Kullanıcı Adı">
+												<input type="text" class="form-control" name="kullanici_mail" id="username" placeholder="Kullanıcı Adınız (Mail Adresiniz)">
 											</div>
 											<div class="form-group">
-												<input type="password" class="form-control" id="password" placeholder="Şifre">
+												<input type="password" class="form-control" name="kullanici_password" id="password" placeholder="Şifreniz">
 											</div>
 											<div class="form-group">
-												<button class="btn btn-default btn-red btn-sm">Giriş Yap</button>
+												<button class="btn btn-default btn-red btn-sm" name="kullanicigiris" type="submit">Giriş Yap</button>
 											</div>
 										</form>
+
+
 									</div>
 									<div class="col-md-6">
 										<div class="title-widget-bg">
@@ -96,7 +122,7 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 									<div class="col-md-12">
 										<form class="form-horizontal" role="form">
 											<div class="form-group">
-												<label for="search" class="col-sm-2 control-label">Search</label>
+												<label for="search" class="col-sm-2 control-label">Ara</label>
 												<div class="col-sm-10">
 													<input type="text" class="form-control" id="search">
 												</div>
@@ -205,11 +231,23 @@ $ayarcek=$ayarsor->fetch(PDO::FETCH_ASSOC);
 							<div class="clearfix"></div>
 						</div>
 					</div>
-				<!--	<ul class="small-menu">
-			<li><a href="" class="myacc">My Account</a></li>
-			<li><a href="" class="myshop">Shopping Chart</a></li>
-			<li><a href="" class="mycheck">Checkout</a></li>
-		</ul> -->
+
+					<?php 
+
+					if(isset($_SESSION['userkullanici_mail']))
+					{ ?>
+
+						<ul class="small-menu">
+			<li><a href="hesabim" class="myacc">Hesap Bilgilerim</a></li>
+			<li><a href="siparislerim" class="myshop">Siparişlerim</a></li>
+			<li><a href="logout" class="mycheck">Güvenli Çıkış</a></li>
+				</ul> 
+
+		<?php } ?>	
+
+					 
+
+				
 				</div>
 			</div>
 		</div>

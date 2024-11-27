@@ -552,6 +552,7 @@ if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 // SLIDER SİLME İSLEMİ BASLANGIC
 
 
+// KULLANICI KAYIT OLMA İŞLEMİ BAŞLANGIÇ
 	if(isset($_POST['kullanicikaydet']))
 	{
 		// htmlspecialchars fonksiyonu postlardan gelen zararlı kodları temizliyor
@@ -563,7 +564,7 @@ if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 
 		if($kullanici_passwordone==$kullanici_passwordtwo)
 		{
-			if($kullanici_passwordone>=6)
+			if(strlen($kullanici_passwordone)>=6) // strlen fonksiyonunu kullanmadan büyük kücük sorgulaması yapılamaz!!
 			{
 				$kullanicikontrol=$db->prepare("SELECT * FROM kullanici WHERE kullanici_mail=:kullanici_mail");
 				$kullanicikontrol->execute([
@@ -602,7 +603,7 @@ if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 					}
 					else
 					{
-						header("Location: ../../index.php?durum=basarisiz");
+						header("Location: ../../register.php?durum=basarisiz");
 					}
 				}
 				else
@@ -621,7 +622,79 @@ if($_GET['kullanicisil'] == "ok")  // get kullanırken isset kullanmayız
 			header("Location: ../../register.php?durum=farklisifre");
 			exit;
 		}
-	}	
+	}
+// KULLANICI KAYIT OLMA İŞLEMİ BITIS	
+
+
+// USER KULLANICI GİRİS İSLEMİ BASLANGIC
+	if(isset($_POST['kullanicigiris']))
+	{
+		$kullanici_mail=htmlspecialchars($_POST['kullanici_mail']);
+		$kullanici_password=md5($_POST['kullanici_password']);
+
+		$kullanicisor=$db->prepare("SELECT * FROM kullanici WHERE
+			kullanici_mail=:kullanici_mail AND
+			kullanici_yetki=:kullanici_yetki AND
+			kullanici_password=:kullanici_password AND
+			kullanici_durum=:kullanici_durum");
+
+		$kullanicisor->execute([
+			'kullanici_mail' => $kullanici_mail,
+			'kullanici_yetki' => 1,
+			'kullanici_password' => $kullanici_password,
+			'kullanici_durum' => 1
+		]);
+
+		$say=$kullanicisor->rowCount();
+
+		if($say==1)
+		{
+			echo $_SESSION['userkullanici_mail']=$kullanici_mail;
+			header("Location: ../../");
+			exit;
+		}
+		else
+		{
+			header("Location: ../../?durum=basarisizgiris");
+		}
+	}
+// USER KULLANICI GİRİS İSLEMİ BASLANGIC
+
+
+// USER KULLANICI BİLGİ DÜZENLEME İSLEMİ BASLANGIC
+	if(isset($_POST['userkullaniciduzenle']))
+	{
+		$userkullanici_id=$_POST['userkullanici_id'];
+
+		$userkullaniciduzenle=$db->prepare("UPDATE kullanici SET
+			kullanici_adsoyad=:kullanici_adsoyad,
+			kullanici_gsm=:kullanici_gsm,
+			kullanici_tc=:kullanici_tc,
+			kullanici_adres=:kullanici_adres,
+			kullanici_il=:kullanici_il,
+			kullanici_ilce=:kullanici_ilce
+			WHERE kullanici_id={$_POST['userkullanici_id']}
+		");
+
+		$duzenle=$userkullaniciduzenle->execute([
+			'kullanici_adsoyad' => $_POST['userkullanici_adsoyad'],
+			'kullanici_gsm' => $_POST['userkullanici_gsm'],
+			'kullanici_tc' => $_POST['userkullanici_tc'],
+			'kullanici_adres' => $_POST['userkullanici_adres'],
+			'kullanici_il' => $_POST['userkullanici_il'],
+			'kullanici_ilce' => $_POST['userkullanici_ilce']
+		]);
+
+		if($duzenle)
+		{
+			header("Location: ../../hesabim.php?kullanici_id=$userkullanici_id&durum=ok");
+		}
+		else
+		{
+			header("Location: ../../hesabim.php?kullanici_id=$userkullanici_id&durum=no");
+		}
+	}
+// USER KULLANICI BİLGİ DÜZENLEME İSLEMİ BASLANGIC
  ?>
 
 
